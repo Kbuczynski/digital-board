@@ -42,6 +42,7 @@ const Gate = ({ gate: { name, symbol, inputs, value } }) => {
         >
             <div className="handle">
                 <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate+90)} />
+
                 {curValue}     
 
                 <StyledGate rotate={rotate}>
@@ -51,6 +52,7 @@ const Gate = ({ gate: { name, symbol, inputs, value } }) => {
 
                         }
                     </StyledGateInputsWrapper>
+
 
                     {
                         (name === "DIODE" && value === 1) ? 
