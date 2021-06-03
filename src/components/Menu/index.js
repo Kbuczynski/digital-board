@@ -6,14 +6,18 @@ const Menu = ({ gates, setGates }) => {
     const [icons, setIcons] = useState([]);
 
     useEffect(() => {
-        const arr = [];
 
-        GATES.map(async (gate) => {
-            const importedIcon = await import(`../../assets/${gate.symbol}`);
-            arr.push(importedIcon.default)
-        })
+        const handleSVG = () => {
+            const arr = [];
 
-        setTimeout(() => setIcons(arr), 1000);        
+            GATES.map(async (gate) => {
+                const importedIcon = await import(`../../assets/${gate.symbol}`);
+                arr.push(importedIcon.default)
+                setIcons([...arr, importedIcon.default]);
+            })
+        }
+
+        handleSVG();
     }, [])
 
     const handleClick = (gate) => setGates([...gates, gate])
@@ -21,7 +25,7 @@ const Menu = ({ gates, setGates }) => {
     return (
         <StyledMenu>
             {
-                GATES.map((gate, index) =>
+                GATES.map((gate, index) => 
                     <StyledMenuItem key={gate.name} onClick={() => handleClick(gate)} >
                         <img src={icons[index]} alt={gate.name} />
                     </StyledMenuItem>

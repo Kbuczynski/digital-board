@@ -10,7 +10,7 @@ export const StyledGate = styled.div`
 
 export const StyledRotate = styled.img`
     position: absolute;
-    top: -.5rem;
+    top: -1.25rem;
     right: 0;
     width: 20px;
     cursor: pointer;

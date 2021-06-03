@@ -3,13 +3,14 @@ import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 
 import rotateImg from "../../assets/rotate.svg"; 
+import diodeYellow from "../../assets/DIODE-YELLOW.svg";
 import { StyledGate, StyledGateInput, StyledGateInputsWrapper, StyledGateOutput, StyledGateOutputWrapper, StyledGateSymbol, StyledRotate } from './style';
 
-const Gate = ({ gate: { name, symbol, inputs } }) => {
+const Gate = ({ gate: { name, symbol, inputs, value } }) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
-    const [value, setValue] = useState(0);
+    const [curValue, setCurValue] = useState(value);
 
     useEffect(() => {
         const importSVG = async () => {
@@ -28,7 +29,10 @@ const Gate = ({ gate: { name, symbol, inputs } }) => {
     }, [symbol, inputs]);
 
     const handleValue = () => {
-        name === "INPUT" && setValue(+!value);
+        if (name === "INPUT") {
+            setCurValue(+!curValue);
+            value = !value;
+        }
     }
 
     return (
@@ -38,7 +42,7 @@ const Gate = ({ gate: { name, symbol, inputs } }) => {
         >
             <div className="handle">
                 <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate+90)} />
-                {value}     
+                {curValue}     
 
                 <StyledGate rotate={rotate}>
                     <StyledGateInputsWrapper inputs={inputs}>
@@ -48,7 +52,13 @@ const Gate = ({ gate: { name, symbol, inputs } }) => {
                         }
                     </StyledGateInputsWrapper>
 
-                    <StyledGateSymbol src={icon} alt={name} onClick={handleValue}/>
+                    {
+                        (name === "DIODE" && value === 1) ? 
+                            <StyledGateSymbol src={diodeYellow} alt={name} onClick={handleValue}/> 
+                            : 
+                            <StyledGateSymbol src={icon} alt={name} onClick={handleValue}/>
+                    }
+                    
 
                     {
                         name !== "DIODE" && 

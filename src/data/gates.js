@@ -43,13 +43,15 @@ export const GATES = [
     },
     {
         name: "DIODE",
+        value: 0,
         operation: (a) => a,
         symbol: "DIODE.svg",
         inputs: 1,
     },
     {
         name: "INPUT",
-        operation: () => 0,
+        value: 0,
+        operation: (value) => value,
         symbol: "INPUT.svg",
         inputs: 0,
     }

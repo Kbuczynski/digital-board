@@ -11,8 +11,10 @@ export const StyledMenu = styled.ul`
     display: flex;
     justify-content: center;
     list-style-type: none;
+    background: ${({ theme }) => theme.colors.secondary}
 `;
 
 export const StyledMenuItem = styled.li`
     padding: 2rem;
+    cursor: pointer;
 `;
