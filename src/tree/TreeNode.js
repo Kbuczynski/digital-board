@@ -7,13 +7,13 @@ class TreeNode {
     }
 
     result() {
-        const {input, operation} = this.gate;
+        const {inputs, operation} = this.gate;
 
-        if(this.descendants.length === 0 && input !== 0){
+        if(this.descendants.length === 0 && inputs !== 0){
             return -1;
         }
 
-        switch (input){
+        switch (inputs){
             case 0:
                 return operation();
             case 1:
