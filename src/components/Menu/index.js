@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GATES } from '../../data/gates';
 import { StyledMenu, StyledMenuItem } from "./style";
+import TreeNode from "../../tree/TreeNode";
 
 const Menu = ({ gates, setGates }) => {
     const [icons, setIcons] = useState([]);
@@ -13,10 +14,10 @@ const Menu = ({ gates, setGates }) => {
             arr.push(importedIcon.default)
         })
 
-        setTimeout(() => setIcons(arr), 1000);        
+        setTimeout(() => setIcons(arr), 1000);
     }, [])
 
-    const handleClick = (gate) => setGates([...gates, gate])
+    const handleClick = (gate) => setGates([...gates, new TreeNode(gate, 1)])
 
     return (
         <StyledMenu>

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import rotateImg from "../../assets/rotate.svg"; 
 import { StyledGate, StyledGateInput, StyledGateInputsWrapper, StyledGateOutput, StyledGateOutputWrapper, StyledGateSymbol, StyledRotate } from './style';
 
-const Gate = ({ gate: { name, symbol, inputs } }) => {
+const Gate = ({ gate: { name, symbol, inputs}, descendants }) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
@@ -32,6 +32,7 @@ const Gate = ({ gate: { name, symbol, inputs } }) => {
     }
 
     return (
+        <>
         <Draggable
             handle=".handle"
             defaultPosition={{ x: 0, y: 0 }}
@@ -60,6 +61,10 @@ const Gate = ({ gate: { name, symbol, inputs } }) => {
                 </StyledGate>
             </div>
         </Draggable>
+            { descendants.map((descendant, index) => {
+                return <Gate key={`${descendant.gate.name}-${index}`} gate={descendant.gate} descendants={descendant.descendants}/>
+            })}
+        </>
     );
 }
 

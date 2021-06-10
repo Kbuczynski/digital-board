@@ -15,7 +15,7 @@ class TreeNode {
 
         switch (inputs){
             case 0:
-                return operation();
+                return operation(this.gate.value);
             case 1:
                 return this.descendants[0].result();
             case 2:
@@ -23,6 +23,20 @@ class TreeNode {
                 let right = this.descendants[1].result();
                 return operation(left, right)
             default: return -1
+        }
+    }
+
+    findChildren(){
+        let nodes = [];
+        nodes.push(this);
+
+        this.descendants.forEach((descendant) => {
+            const curDescendant = descendant.findChildren();
+            nodes.push(curDescendant)
+        })
+
+        if(nodes.length !== 0){
+            return nodes;
         }
     }
 }

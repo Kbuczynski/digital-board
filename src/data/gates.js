@@ -49,7 +49,8 @@ export const GATES = [
     },
     {
         name: "INPUT",
-        operation: () => 0,
+        value: 0,
+        operation: (value) => value,
         symbol: "INPUT.svg",
         inputs: 0,
     }
