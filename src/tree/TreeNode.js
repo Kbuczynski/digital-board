@@ -4,24 +4,25 @@ class TreeNode {
         this.descendants = [];
         this.parent = null;
         this.depth = depth;
-        this.id = Date.now() + Math.floor(Math.random() * 100);
+        this.id = Date.now() + Math.floor(Math.random() * 100000);
     }
 
     add(...nodes){
         for(let node of nodes){
-            node.parent = this;
+            node.parent = this.id;
             this.descendants.push(node);
         }
     }
 
-    find(id){
-        if(this.id === +id){
-            return this;
-        }
-        this.descendants.forEach((descendant) => {
-            descendant.find(id);
-        })
+    findNode(id){
+        let nodes = this.findChildren().flat(Infinity);
+        return nodes.find((node) => node.id === +id);
     }
+
+    // deleteNode(id){
+    //     let nodes = this.findChildren().flat(Infinity);
+    //     return nodes.find((node) => node.id === +id);
+    // }
 
     changeValue(id, value){
         if(this.id === +id){
