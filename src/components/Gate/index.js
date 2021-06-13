@@ -12,6 +12,7 @@ import {
     StyledGateSymbol,
     StyledRotate
 } from './style';
+import {getOffset} from "../../utils/getOffset";
 
 const Gate = ({node, handleNewValue, handleConnection}) => {
     const [icon, setIcon] = useState('');
@@ -47,13 +48,21 @@ const Gate = ({node, handleNewValue, handleConnection}) => {
         }
     }
 
+    // const handlePosition = (e) => {
+    //     const target = e.target;
+    //     const position = getOffset(target);
+    //     console.log(position)
+    //
+    //     handleNewPosition(node.id, position);
+    // }
+
     return (
         <>
             <Draggable
                 handle=".handle"
                 defaultPosition={{x: 0, y: 0}}
             >
-                <div className="handle" id={node.id}>
+                <div className="handle" id={node.id} o>
                     <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate + 90)}/>
                     {node.gate.name === "INPUT" ? value : ""}
 
@@ -84,7 +93,7 @@ const Gate = ({node, handleNewValue, handleConnection}) => {
             </Draggable>
             {node.descendants.map((descendant, index) => {
                 return <Gate key={`${descendant.gate.name}-${index}`} node={descendant} handleNewValue={handleNewValue}
-                             handleConnection={handleConnection}/>
+                             handleConnection={handleConnection} />
             })}
         </>
     );

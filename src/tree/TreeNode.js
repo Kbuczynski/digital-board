@@ -5,6 +5,8 @@ class TreeNode {
         this.parent = null;
         this.depth = depth;
         this.id = Date.now() + Math.floor(Math.random() * 100);
+        this.x = 0;
+        this.y = 0;
     }
 
     add(...nodes){
@@ -14,13 +16,9 @@ class TreeNode {
         }
     }
 
-    find(id){
-        if(this.id === +id){
-            return this;
-        }
-        this.descendants.forEach((descendant) => {
-            descendant.find(id);
-        })
+    findNode(id){
+        let nodes = this.findChildren().flat(Infinity);
+        return nodes.find((node) => node.id === +id);
     }
 
     changeValue(id, value){
@@ -32,6 +30,13 @@ class TreeNode {
         this.descendants.forEach((descendant) => {
             descendant.changeValue(id, value);
         })
+    }
+
+    updatePosition(id, x, y) {
+        const node = this.findNode(id);
+
+        node.x = x;
+        node.y = y;
     }
 
     result() {
