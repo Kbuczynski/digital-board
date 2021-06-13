@@ -7,14 +7,17 @@ const Menu = ({ gates, setGates }) => {
     const [icons, setIcons] = useState([]);
 
     useEffect(() => {
-        const arr = [];
+        const handleSVG = () => {
+            const arr = [];
 
-        GATES.map(async (gate) => {
-            const importedIcon = await import(`../../assets/${gate.symbol}`);
-            arr.push(importedIcon.default)
-        })
+            GATES.map(async (gate) => {
+                const importedIcon = await import(`../../assets/${gate.symbol}`);
+                arr.push(importedIcon.default)
+                setIcons([...arr, importedIcon.default]);
+            })
+        }
 
-        setTimeout(() => setIcons(arr), 1000);
+        handleSVG();
     }, [])
 
     const handleClick = (gate) => setGates([...gates, new TreeNode(gate, 1)])

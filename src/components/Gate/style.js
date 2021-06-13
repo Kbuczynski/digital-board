@@ -24,7 +24,7 @@ export const StyledGateInputsWrapper = styled.div`
 `;
 
 export const StyledGateInput = styled.div`
-    height: .25rem;
+    height: .40rem;
     width: 1rem;
     background-color: ${ ({ theme }) => theme.colors.primary };
 `;
@@ -39,7 +39,7 @@ export const StyledGateOutputWrapper = styled.div`
 `;
 
 export const StyledGateOutput = styled.div`
-    height: .25rem;
+    height: .40rem;
     width: 1rem;
     background-color: ${ ({ theme }) => theme.colors.primary };
 `; 

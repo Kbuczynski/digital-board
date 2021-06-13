@@ -4,6 +4,34 @@ class TreeNode {
         this.descendants = [];
         this.parent = null;
         this.depth = depth;
+        this.id = Date.now() + Math.floor(Math.random() * 100);
+    }
+
+    add(...nodes){
+        for(let node of nodes){
+            node.parent = this;
+            this.descendants.push(node);
+        }
+    }
+
+    find(id){
+        if(this.id === +id){
+            return this;
+        }
+        this.descendants.forEach((descendant) => {
+            descendant.find(id);
+        })
+    }
+
+    changeValue(id, value){
+        if(this.id === +id){
+            this.gate.value = value;
+            return;
+        }
+
+        this.descendants.forEach((descendant) => {
+            descendant.changeValue(id, value);
+        })
     }
 
     result() {

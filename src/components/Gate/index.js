@@ -1,68 +1,90 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 
-import rotateImg from "../../assets/rotate.svg"; 
-import { StyledGate, StyledGateInput, StyledGateInputsWrapper, StyledGateOutput, StyledGateOutputWrapper, StyledGateSymbol, StyledRotate } from './style';
+import rotateImg from "../../assets/rotate.svg";
+import {
+    StyledGate,
+    StyledGateInput,
+    StyledGateInputsWrapper,
+    StyledGateOutput,
+    StyledGateOutputWrapper,
+    StyledGateSymbol,
+    StyledRotate
+} from './style';
 
-const Gate = ({ gate: { name, symbol, inputs}, descendants }) => {
+const Gate = ({node, handleNewValue, handleConnection}) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
     const [value, setValue] = useState(0);
+    const {gate} = node;
 
     useEffect(() => {
+        const {gate} = node;
+
         const importSVG = async () => {
-            const importedIcon = await import(`../../assets/${symbol}`);
+            const importedIcon = await import(`../../assets/${gate.symbol}`);
             setIcon(importedIcon.default);
         }
 
         const handleInputs = () => {
             const arr = [];
-            for (let i = 0; i < inputs; i++) arr.push(i);
+            for (let i = 0; i < gate.inputs; i++) arr.push(i);
             setInputsArr(arr);
         }
 
         importSVG();
         handleInputs();
-    }, [symbol, inputs]);
+    }, [gate.symbol, gate.inputs]);
 
     const handleValue = () => {
-        name === "INPUT" && setValue(+!value);
+        const newValue = +!value;
+
+        if (node.gate.name === "INPUT") {
+            setValue(newValue);
+            handleNewValue(node.id, newValue);
+        }
     }
 
     return (
         <>
-        <Draggable
-            handle=".handle"
-            defaultPosition={{ x: 0, y: 0 }}
-        >
-            <div className="handle">
-                <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate+90)} />
-                {value}     
+            <Draggable
+                handle=".handle"
+                defaultPosition={{x: 0, y: 0}}
+            >
+                <div className="handle" id={node.id}>
+                    <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate + 90)}/>
+                    {node.gate.name === "INPUT" ? value : ""}
 
-                <StyledGate rotate={rotate}>
-                    <StyledGateInputsWrapper inputs={inputs}>
+                    <StyledGate rotate={rotate}>
+                        <StyledGateInputsWrapper inputs={node.gate.inputs}>
+                            {
+                                inputsArr.map((index) => <StyledGateInput id={`${node.id}-input-${index}`} key={index}
+                                                                          onClick={() => {
+                                                                              handleConnection(`${node.id}-input-${index}`)
+                                                                          }}/>)
+
+                            }
+                        </StyledGateInputsWrapper>
+
+                        <StyledGateSymbol src={icon} alt={node.gate.name} onClick={handleValue}/>
+
                         {
-                            inputsArr.map((index) => <StyledGateInput key={index}/>)
-
-                        }
-                    </StyledGateInputsWrapper>
-
-                    <StyledGateSymbol src={icon} alt={name} onClick={handleValue}/>
-
-                    {
-                        name !== "DIODE" && 
+                            node.gate.name !== "DIODE" &&
                             <StyledGateOutputWrapper>
-                                <StyledGateOutput />
+                                <StyledGateOutput id={`${node.id}-output`} onClick={() => {
+                                    handleConnection(`${node.id}-output`)
+                                }}/>
                             </StyledGateOutputWrapper>
-                    }
+                        }
 
-                </StyledGate>
-            </div>
-        </Draggable>
-            { descendants.map((descendant, index) => {
-                return <Gate key={`${descendant.gate.name}-${index}`} gate={descendant.gate} descendants={descendant.descendants}/>
+                    </StyledGate>
+                </div>
+            </Draggable>
+            {node.descendants.map((descendant, index) => {
+                return <Gate key={`${descendant.gate.name}-${index}`} node={descendant} handleNewValue={handleNewValue}
+                             handleConnection={handleConnection}/>
             })}
         </>
     );
