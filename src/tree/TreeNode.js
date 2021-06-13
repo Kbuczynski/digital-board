@@ -4,6 +4,8 @@ class TreeNode {
         this.descendants = [];
         this.parent = null;
         this.depth = depth;
+        this.x = 0;
+        this.y = 0;
         this.id = Date.now() + Math.floor(Math.random() * 100000);
     }
 
@@ -33,6 +35,13 @@ class TreeNode {
         this.descendants.forEach((descendant) => {
             descendant.changeValue(id, value);
         })
+    }
+
+    updatePosition(id, x, y) {
+        const node = this.findNode(id);
+
+        node.x = x;
+        node.y = y;
     }
 
     result() {
