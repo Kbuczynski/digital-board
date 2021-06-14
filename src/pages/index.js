@@ -34,8 +34,8 @@ const Index = () => {
         const i32 = new TreeNode(gt.getGate("INPUT"), or2.depth + 1);
         or2.add(i31, i32);
 
-        let circut = root.findChildren().flat(Infinity).sort((item1, item2) => item1.depth - item2.depth);
-        console.table(circut);
+        // let circut = root.findChildren().flat(Infinity).sort((item1, item2) => item1.depth - item2.depth);
+        // console.table(circut);
         // console.log(root.result());
 
         setGates([root]);

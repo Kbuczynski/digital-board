@@ -12,12 +12,10 @@ const Board = ({gates, setGates}) => {
     // wywalic handleconnection bo useless ale na podstawie tego wykonac operacje na state
     // napisac funkcje w treenode do scalania
     // chyba git
-    const [inputNodeId, setInoutNodeId] = useState(null);
+    const [inputNodeId, setInputNodeId] = useState(null);
     const [outputNodeId, setOutputNodeId] = useState(null);
     const [div1, setDiv1] = useState(null);
     const [div2, setDiv2] = useState(null);
-
-    console.log(gates);
 
     const handleNewValue = (id, value) => {
         const newGates = gates;
@@ -31,31 +29,53 @@ const Board = ({gates, setGates}) => {
         }
         if(node) node.changeValue(id,value);
         setGates(newGates);
-        console.log(gates);
     }
 
-    // const handleNewPositions = (id, positions) => {
-    //     const newGates = gates;
-    //     console.log(positions)
-    //     gates[0].updatePosition(id, positions.left, positions.top);
-    //     setGates(newGates);
-    // }
-
     useEffect(() => {
-        const d1 = document.getElementById(gates[2]?.id);
-        const d2 = document.getElementById(gates[1]?.id);
+        console.log("INPUT:", inputNodeId)
+        console.log("OUTPUT:", outputNodeId)
+        if(inputNodeId && outputNodeId){
+            if(inputNodeId !== outputNodeId){
+                let inputNode;
+                let outputNode;
+                let outputNodeIndex;
+                for(let gate of gates){
+                    let potentialNode = gate.findNode(inputNodeId);
+                    if(outputNodeId == +gate.id) outputNode = gate;
+                    if(potentialNode){
+                        inputNode = potentialNode;
+                        break;
+                    }
+                }
+                for(let i = 0; i < gates.length; i++) {
+                    if(outputNodeId === +gates[i].id){
+                        outputNode = gates[i];
+                        outputNodeIndex = i;
+                    }
+                }
 
-        if (getOffset(d1) !== div1 || getOffset(d2) !== div2) {
-            setDiv1(getOffset(d1));
-            setDiv2(getOffset(d2));
+                if(outputNode && !outputNode.parent){
+                    let tempNode = outputNode;
+                    tempNode.depth = inputNode.depth + 1
+                    inputNode.add(tempNode);
+                    let gates2 = gates;
+                    gates2.splice(outputNodeIndex, 1);
+                    setGates(gates2);
+                    // console.log("INPUTNODE: ", inputNode);
+                    // console.log("OUTPUT: ", outputNode);
+                    // console.log("CONNECTING")
+                }
+
+                setInputNodeId(null);
+                setOutputNodeId(null);
+            }
         }
-
-    }, [gates])
+    }, [inputNodeId, outputNodeId])
 
     return (
         <StyledBoard>
             {
-                gates.map((node, index) => <Gate key={`${node.gate.name}-${index}`} node={node} handleNewValue={handleNewValue} />)
+                gates.map((node, index) => <Gate key={`${node.gate.name}-${index}`} node={node} handleNewValue={handleNewValue} setInputNodeId={setInputNodeId} setOutputNodeId={setOutputNodeId}/>)
             }
 
             <Cable output={div1} input={div2}/>

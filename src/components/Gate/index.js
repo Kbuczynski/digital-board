@@ -14,7 +14,7 @@ import {
 } from './style';
 import {getOffset} from "../../utils/getOffset";
 
-const Gate = ({node, handleNewValue}) => {
+const Gate = ({node, handleNewValue, setInputNodeId, setOutputNodeId}) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
@@ -71,7 +71,7 @@ const Gate = ({node, handleNewValue}) => {
                             {
                                 inputsArr.map((index) => <StyledGateInput id={`${node.id}-input-${index}`} key={index}
                                                                           onClick={() => {
-
+                                                                            setInputNodeId(+node.id)
                                                                           }}/>)
 
                             }
@@ -83,7 +83,7 @@ const Gate = ({node, handleNewValue}) => {
                             node.gate.name !== "DIODE" &&
                             <StyledGateOutputWrapper>
                                 <StyledGateOutput id={`${node.id}-output`} onClick={() => {
-
+                                    setOutputNodeId(+node.id)
                                 }}/>
                             </StyledGateOutputWrapper>
                         }
@@ -92,7 +92,7 @@ const Gate = ({node, handleNewValue}) => {
                 </div>
             </Draggable>
             {node.descendants.map((descendant, index) => {
-                return <Gate key={`${descendant.gate.name}-${index}`} node={descendant} handleNewValue={handleNewValue}
+                return <Gate key={`${descendant.gate.name}-${index}`} node={descendant} handleNewValue={handleNewValue}  setInputNodeId={setInputNodeId} setOutputNodeId={setOutputNodeId}
                               />
             })}
         </>

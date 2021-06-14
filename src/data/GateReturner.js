@@ -4,6 +4,8 @@ class NOTGate {
         this.operation = (a) => !a;
         this.symbol = "NOT.svg"
         this.inputs = 1;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -13,6 +15,8 @@ class ORGate {
         this.operation = (a,b) => a | b;
         this.symbol = "OR.svg"
         this.inputs = 2;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -22,6 +26,8 @@ class NORGate {
         this.operation = (a,b) => !(a | b);
         this.symbol = "NOR.svg"
         this.inputs = 2;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -31,6 +37,8 @@ class ANDGate {
         this.operation = (a,b) => a & b;
         this.symbol = "AND.svg"
         this.inputs = 2;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -40,6 +48,8 @@ class NANDGate {
         this.operation = (a,b) => !(a & b);
         this.symbol = "NAND.svg"
         this.inputs = 2;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -49,6 +59,8 @@ class XORGate {
         this.operation = (a,b) => a ^ b;
         this.symbol = "XOR.svg"
         this.inputs = 2;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -58,6 +70,8 @@ class XNORGate {
         this.operation = (a,b) => !(a ^ b);
         this.symbol = "XNOR.svg"
         this.inputs = 2;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -67,6 +81,8 @@ class DIODEGate {
         this.operation = (a) => 0;
         this.symbol = "DIODE.svg"
         this.inputs = 1;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -77,6 +93,8 @@ class INPUTGate {
         this.operation = (value) => value;
         this.symbol = "INPUT.svg"
         this.inputs = 0;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
