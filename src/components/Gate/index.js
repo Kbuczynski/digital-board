@@ -14,7 +14,7 @@ import {
 import {getOffset} from "../../utils/getOffset";
 import Cable from "../Cable";
 
-const Gate = ({gates, node, handleNewValue, handleConnection, handleNewPositions}) => {
+const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, setOutputNodeId}) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
@@ -50,6 +50,7 @@ const Gate = ({gates, node, handleNewValue, handleConnection, handleNewPositions
         }
     }
 
+
     const handlePosition = (e) => {
         setGateX(e.screenX)
         setGateY(e.screenY);
@@ -74,7 +75,7 @@ const Gate = ({gates, node, handleNewValue, handleConnection, handleNewPositions
                             {
                                 inputsArr.map((index) => <StyledGateInput id={`${node.id}-input-${index}`} key={index}
                                                                           onClick={() => {
-                                                                              handleConnection(`${node.id}-input-${index}`)
+                                                                            setInputNodeId(+node.id)
                                                                           }}/>)
 
                             }
@@ -86,7 +87,7 @@ const Gate = ({gates, node, handleNewValue, handleConnection, handleNewPositions
                             node.gate.name !== "DIODE" &&
                             <StyledGateOutputWrapper>
                                 <StyledGateOutput id={`${node.id}-output`} onClick={() => {
-                                    handleConnection(`${node.id}-output`)
+                                    setOutputNodeId(+node.id)
                                 }}/>
                             </StyledGateOutputWrapper>
                         }
@@ -100,8 +101,9 @@ const Gate = ({gates, node, handleNewValue, handleConnection, handleNewPositions
             }
 
             {node.descendants.map((descendant, index) => {
+
                 return <Gate key={`${descendant.gate.name}-${index}`} gates={gates} node={descendant} handleNewValue={handleNewValue}
-                             handleConnection={handleConnection} handleNewPositions={handleNewPositions}/>
+                             handleNewPositions={handleNewPositions}  setInputNodeId={setInputNodeId} setOutputNodeId={setOutputNodeId}/>
             })}
         </>
     );

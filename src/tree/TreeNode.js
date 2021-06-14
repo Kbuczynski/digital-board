@@ -7,12 +7,16 @@ class TreeNode {
         this.x = 0;
         this.y = 0;
         this.id = Date.now() + Math.floor(Math.random() * 100000);
+        this.complete = this.descendants.length == this.gate.inputs ? true : false;
     }
 
     add(...nodes){
         for(let node of nodes){
             node.parent = this.id;
             this.descendants.push(node);
+        }
+        if(this.descendants.length == this.gate.inputs){
+            this.complete = true;
         }
     }
 
@@ -27,14 +31,15 @@ class TreeNode {
     // }
 
     changeValue(id, value){
-        if(this.id === +id){
-            this.gate.value = value;
-            return;
-        }
+        const node = this.findNode(id);
+        node.gate.value = value;
+    }
 
-        this.descendants.forEach((descendant) => {
-            descendant.changeValue(id, value);
-        })
+    updatePosition(id, x, y) {
+        const node = this.findNode(id);
+
+        node.x = x;
+        node.y = y;
     }
 
     updatePosition(node, x, y) {
