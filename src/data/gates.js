@@ -3,7 +3,7 @@ export const GATES = [
         name: "NOT",
         operation: (a) => !a,
         symbol: "NOT.svg",
-        inputs: 10,
+        inputs: 1,
     },
     {
         name: "OR",

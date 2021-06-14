@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { GATES } from '../../data/gates';
 import { StyledMenu, StyledMenuItem } from "./style";
 import TreeNode from "../../tree/TreeNode";
+import GateReturner from "../../data/GateReturner";
 
 const Menu = ({ gates, setGates }) => {
     const [icons, setIcons] = useState([]);
+    let gt = new GateReturner();
 
     useEffect(() => {
         const handleSVG = () => {
@@ -20,7 +22,7 @@ const Menu = ({ gates, setGates }) => {
         handleSVG();
     }, [])
 
-    const handleClick = (gate) => setGates([...gates, new TreeNode(gate, 1)])
+    const handleClick = (gate) => setGates([...gates, new TreeNode(gt.getGate(gate.name), 1)])
 
     return (
         <StyledMenu>
