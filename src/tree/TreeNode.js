@@ -10,6 +10,17 @@ class TreeNode {
         this.complete = this.descendants.length == this.gate.inputs ? true : false;
     }
 
+    isTreeCompleted(){
+        let completed = true;
+        let nodes = this.findChildren().flat(Infinity);
+        for(const node of nodes){
+            if(!node.complete){
+                completed = false;
+            }
+        }
+        return completed;
+    }
+
     add(...nodes){
         let code = -1;
         if(nodes.length <= this.gate.inputs && this.descendants.length < this.gate.inputs)

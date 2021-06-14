@@ -24,6 +24,30 @@ const Menu = ({ gates, setGates }) => {
 
     const handleClick = (gate) => setGates([...gates, new TreeNode(gt.getGate(gate.name), 1)])
 
+    const simulate = () => {
+        if(gates.length !== 1){
+            console.log("brak układu lub istnieja node nie skonczone")
+            return;
+        }
+        let tree = gates[0].findChildren().flat(Infinity);
+        let containsDiode = false;
+        for(const node of tree){
+            if(node.gate.name === "DIODE") containsDiode = true;
+        }
+        if(!containsDiode){
+            console.log("układ nie posiada diody")
+            return;
+        }
+        if(!gates[0].isTreeCompleted()){
+            console.log("układ nie jest kompletny")
+            return;
+        }
+
+        console.log(gates);
+        console.log(gates[0].result())
+
+    }
+
     return (
         <StyledMenu>
             {
@@ -33,6 +57,12 @@ const Menu = ({ gates, setGates }) => {
                     </StyledMenuItem>
                 )
             }
+                <StyledMenuItem onClick={() => simulate()} >
+                    SIMULATE
+                </StyledMenuItem>
+                <StyledMenuItem onClick={() => {setGates([])}} >
+                    CLEAR
+                </StyledMenuItem>
         </StyledMenu>
     );
 }
