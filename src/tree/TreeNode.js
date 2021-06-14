@@ -42,6 +42,12 @@ class TreeNode {
         node.y = y;
     }
 
+    updatePosition(node, x, y) {
+        // console.log(node, x, y)
+        node.x = x;
+        node.y = y;
+    }
+
     result() {
         const {inputs, operation} = this.gate;
 

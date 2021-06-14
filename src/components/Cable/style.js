@@ -9,4 +9,5 @@ export const StyledCable = styled.div`
     top: ${ ({ top }) => `${top}px`};
     width: ${ ({ length }) => `${length}px`};
     transform: ${ ({ angle }) => `rotate(${angle}deg)`};
+  z-index: -1;
 `;

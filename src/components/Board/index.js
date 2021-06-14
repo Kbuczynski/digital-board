@@ -5,17 +5,8 @@ import Cable from "../Cable";
 import {getOffset} from "../../utils/getOffset";
 
 const Board = ({gates, setGates}) => {
-    // TODO: utworzyć state przechowujace elementy osobno dla inputa i dla outputa
-    // tego state przekazac do GATE
-    // na podstawie warunkow potem laczyc, element z outputem jest wchlaniany przez tego z inputem
-    // potem usunac element z outputem z globalnej tablicy gates
-    // wywalic handleconnection bo useless ale na podstawie tego wykonac operacje na state
-    // napisac funkcje w treenode do scalania
-    // chyba git
     const [inputNodeId, setInputNodeId] = useState(null);
     const [outputNodeId, setOutputNodeId] = useState(null);
-    const [div1, setDiv1] = useState(null);
-    const [div2, setDiv2] = useState(null);
 
     const handleNewValue = (id, value) => {
         const newGates = gates;
@@ -61,9 +52,6 @@ const Board = ({gates, setGates}) => {
                     let gates2 = gates;
                     gates2.splice(outputNodeIndex, 1);
                     setGates(gates2);
-                    // console.log("INPUTNODE: ", inputNode);
-                    // console.log("OUTPUT: ", outputNode);
-                    // console.log("CONNECTING")
                 }
 
                 setInputNodeId(null);
@@ -72,13 +60,31 @@ const Board = ({gates, setGates}) => {
         }
     }, [inputNodeId, outputNodeId])
 
+    const handleNewPositions = (id, x, y) => {
+        let node;
+        for(let gate of gates){
+            let potentialNode = gate.findNode(id);
+            if(potentialNode){
+                node = potentialNode;
+                break;
+            }
+        }
+
+        if (node) {
+            const newGates = gates;
+            gates[0].updatePosition(node, x, y);
+            setGates(newGates);
+        }
+    }
+
+
     return (
         <StyledBoard>
             {
-                gates.map((node, index) => <Gate key={`${node.gate.name}-${index}`} node={node} handleNewValue={handleNewValue} setInputNodeId={setInputNodeId} setOutputNodeId={setOutputNodeId}/>)
+
+                gates.map((node, index) => <Gate key={`${node.gate.name}-${index}`} gates={gates} node={node} handleNewValue={handleNewValue} handleNewPositions={handleNewPositions}setInputNodeId={setInputNodeId} setOutputNodeId={setOutputNodeId} />)
             }
 
-            <Cable output={div1} input={div2}/>
         </StyledBoard>
     );
 }
