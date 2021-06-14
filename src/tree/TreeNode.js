@@ -11,13 +11,18 @@ class TreeNode {
     }
 
     add(...nodes){
+        let code = -1;
+        if(nodes.length <= this.gate.inputs && this.descendants.length < this.gate.inputs)
         for(let node of nodes){
             node.parent = this.id;
             this.descendants.push(node);
+            code = 0;
         }
         if(this.descendants.length == this.gate.inputs){
             this.complete = true;
         }
+
+        return code;
     }
 
     findNode(id){

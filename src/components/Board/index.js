@@ -48,9 +48,9 @@ const Board = ({gates, setGates}) => {
                 if(outputNode && !outputNode.parent){
                     let tempNode = outputNode;
                     tempNode.depth = inputNode.depth + 1
-                    inputNode.add(tempNode);
+                    let code = inputNode.add(tempNode);
                     let gates2 = gates;
-                    gates2.splice(outputNodeIndex, 1);
+                    if(code === 0) gates2.splice(outputNodeIndex, 1);
                     setGates(gates2);
                 }
 
