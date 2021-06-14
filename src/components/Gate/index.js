@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Draggable from 'react-draggable';
-import PropTypes from 'prop-types';
 
 import rotateImg from "../../assets/rotate.svg";
 import {
@@ -13,12 +12,15 @@ import {
     StyledRotate
 } from './style';
 import {getOffset} from "../../utils/getOffset";
+import Cable from "../Cable";
 
-const Gate = ({node, handleNewValue, handleConnection}) => {
+const Gate = ({gates, node, handleNewValue, handleConnection, handleNewPositions}) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
     const [value, setValue] = useState(0);
+    const [gateX, setGateX] = useState(0);
+    const [gateY, setGateY] = useState(0);
     const {gate} = node;
 
     useEffect(() => {
@@ -48,19 +50,20 @@ const Gate = ({node, handleNewValue, handleConnection}) => {
         }
     }
 
-    // const handlePosition = (e) => {
-    //     const target = e.target;
-    //     const position = getOffset(target);
-    //     console.log(position)
-    //
-    //     handleNewPosition(node.id, position);
-    // }
+    const handlePosition = (e) => {
+        setGateX(e.screenX)
+        setGateY(e.screenY);
+        gate.x = e.screenX;
+        gate.y = e.screenY;
+        handleNewPositions(node.id, e.screenX, e.screenY);
+    }
 
     return (
         <>
             <Draggable
                 handle=".handle"
                 defaultPosition={{x: 0, y: 0}}
+                onDrag={handlePosition}
             >
                 <div className="handle" id={node.id} o>
                     <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate + 90)}/>
@@ -91,21 +94,17 @@ const Gate = ({node, handleNewValue, handleConnection}) => {
                     </StyledGate>
                 </div>
             </Draggable>
+
+            {
+                <Cable gates={gates} node={node} gateX={gateX} gateY={gateY} />
+            }
+
             {node.descendants.map((descendant, index) => {
-                return <Gate key={`${descendant.gate.name}-${index}`} node={descendant} handleNewValue={handleNewValue}
-                             handleConnection={handleConnection} />
+                return <Gate key={`${descendant.gate.name}-${index}`} gates={gates} node={descendant} handleNewValue={handleNewValue}
+                             handleConnection={handleConnection} handleNewPositions={handleNewPositions}/>
             })}
         </>
     );
-}
-
-Gate.propTypes = {
-    gate: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        operation: PropTypes.func,
-        symbol: PropTypes.string.isRequired,
-        inputs: PropTypes.number,
-    }),
 }
 
 export default Gate;

@@ -13,8 +13,8 @@ const Board = ({gates, setGates}) => {
     // napisac funkcje w treenode do scalania
     // chyba git
     const [connection, setConnection] = useState([]);
-    const [div1, setDiv1] = useState(null);
-    const [div2, setDiv2] = useState(null);
+    // const [div1, setDiv1] = useState(null);
+    // const [div2, setDiv2] = useState(null);
 
     const handleConnection = (id) => {
         let tokens = id.split("-");
@@ -52,31 +52,29 @@ const Board = ({gates, setGates}) => {
         setGates(newGates);
     }
 
-    // const handleNewPositions = (id, positions) => {
-    //     const newGates = gates;
-    //     console.log(positions)
-    //     gates[0].updatePosition(id, positions.left, positions.top);
-    //     setGates(newGates);
-    // }
-
-    useEffect(() => {
-        const d1 = document.getElementById(gates[2]?.id);
-        const d2 = document.getElementById(gates[1]?.id);
-
-        if (getOffset(d1) !== div1 || getOffset(d2) !== div2) {
-            setDiv1(getOffset(d1));
-            setDiv2(getOffset(d2));
+    const handleNewPositions = (id, x, y) => {
+        let node;
+        for(let gate of gates){
+            let potentialNode = gate.findNode(id);
+            if(potentialNode){
+                node = potentialNode;
+                break;
+            }
         }
 
-    }, [gates])
+        if (node) {
+            // console.log('node', node)
+            const newGates = gates;
+            gates[0].updatePosition(node, x, y);
+            setGates(newGates);
+        }
+    }
 
     return (
         <StyledBoard>
             {
-                gates.map((node, index) => <Gate key={`${node.gate.name}-${index}`} node={node} handleNewValue={handleNewValue} handleConnection={handleConnection} />)
+                gates.map((node, index) => <Gate key={`${node.gate.name}-${index}`} gates={gates} node={node} handleNewValue={handleNewValue} handleConnection={handleConnection} handleNewPositions={handleNewPositions} />)
             }
-
-            <Cable output={div1} input={div2}/>
         </StyledBoard>
     );
 }
