@@ -21,24 +21,24 @@ const Index = () => {
         const DIODE = GATES[7];
         const INPUT = GATES[8];
 
-        const root = new TreeNode(gt.getGate("DIODE"), 1);
-
-        const or1 = new TreeNode(gt.getGate("OR"), root.depth + 1);
-        root.add(or1);
-
-        const or2 = new TreeNode(gt.getGate("OR"), or1.depth + 1);
-        const and2 = new TreeNode(gt.getGate("AND"), or1.depth + 1);
-        or1.add(or2, and2);
-
-        const i31 = new TreeNode(gt.getGate("INPUT"), or2.depth + 1);
-        const i32 = new TreeNode(gt.getGate("INPUT"), or2.depth + 1);
-        or2.add(i31, i32);
+        // const root = new TreeNode(gt.getGate("DIODE"), 1);
+        //
+        // const or1 = new TreeNode(gt.getGate("OR"), root.depth + 1);
+        // root.add(or1);
+        //
+        // const or2 = new TreeNode(gt.getGate("OR"), or1.depth + 1);
+        // const and2 = new TreeNode(gt.getGate("AND"), or1.depth + 1);
+        // or1.add(or2, and2);
+        //
+        // const i31 = new TreeNode(gt.getGate("INPUT"), or2.depth + 1);
+        // const i32 = new TreeNode(gt.getGate("INPUT"), or2.depth + 1);
+        // or2.add(i31, i32);
 
         // let circut = root.findChildren().flat(Infinity).sort((item1, item2) => item1.depth - item2.depth);
         // console.table(circut);
         // console.log(root.result());
 
-        setGates([root]);
+        // setGates([root]);
 
 
     }, [])
