@@ -19,8 +19,8 @@ const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, 
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
     const [value, setValue] = useState(0);
-    const [gateX, setGateX] = useState(0);
-    const [gateY, setGateY] = useState(0);
+    const [gateX, setGateX] = useState(node.x);
+    const [gateY, setGateY] = useState(node.y);
     const {gate} = node;
 
     useEffect(() => {
@@ -63,7 +63,7 @@ const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, 
         <>
             <Draggable
                 handle=".handle"
-                defaultPosition={{x: 0, y: 0}}
+                defaultPosition={{x: node.x, y: node.y}}
                 onDrag={handlePosition}
             >
                 <div className="handle" id={node.id} o>
