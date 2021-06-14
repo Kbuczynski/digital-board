@@ -45,14 +45,14 @@ const Index = () => {
 
     return (
         <Layout>
-            <div style={{
-    width: 300,
-    height: 100,
-    backgroundColor: 'red'
-}}
-    onClick={() => {
-        console.log(gates)
-    }}/>
+{/*            <div style={{*/}
+{/*    width: 300,*/}
+{/*    height: 100,*/}
+{/*    backgroundColor: 'red'*/}
+{/*}}*/}
+{/*    onClick={() => {*/}
+{/*        console.log(gates)*/}
+{/*    }}/>*/}
             <Menu gates={gates} setGates={setGates} />
             <Board gates={gates} setGates={setGates} />
         </Layout>
