@@ -37,9 +37,8 @@ class TreeNode {
         })
     }
 
-    updatePosition(id, x, y) {
-        const node = this.findNode(id);
-
+    updatePosition(node, x, y) {
+        // console.log(node, x, y)
         node.x = x;
         node.y = y;
     }
