@@ -52,17 +52,12 @@ const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, 
     }
 
 
-    const handlePosition = (e) => {
-        const left = getOffset(e.target).left;
-        const top = getOffset(e.target).top;
-
-        console.log(left, e.screenX)
-
-        setGateX(left)
-        setGateY(top);
-        gate.x = left;
-        gate.y = top;
-        handleNewPositions(node.id, left, top);
+    const handlePosition = (e, ui) => {
+        setGateX(gate.x + ui.deltaX)
+        setGateY(gate.y + ui.deltaY);
+        gate.x = gate.x + ui.deltaX;
+        gate.y = gate.y + ui.deltaY;
+        handleNewPositions(node.id, gate.x + ui.deltaX, gate.y + ui.deltaY);
     }
 
     return (
