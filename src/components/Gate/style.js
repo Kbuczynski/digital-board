@@ -14,6 +14,8 @@ export const StyledRotate = styled.img`
     right: 0;
     width: 20px;
     cursor: pointer;
+  
+    display: none;
 `;
 
 export const StyledGateInputsWrapper = styled.div`

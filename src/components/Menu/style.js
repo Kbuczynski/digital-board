@@ -15,4 +15,5 @@ export const StyledMenu = styled.ul`
 
 export const StyledMenuItem = styled.li`
     padding: 2rem;
+  cursor: pointer;
 `;
