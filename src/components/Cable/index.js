@@ -47,7 +47,7 @@ const Cable = ({ gates, node, gateX, gateY }) => {
         }
 
         connect();
-    }, [gateX, gateY]);
+    });
 
     return (
         <StyledCable left={left} top={top} length={length} angle={angle} />
