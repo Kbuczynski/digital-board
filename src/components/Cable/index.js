@@ -28,10 +28,10 @@ const Cable = ({ gates, node, gateX, gateY }) => {
 
             // bottom right
             const x1 = off1.left - off1.width;
-            const y1 = off1.top + off1.height + 5;
+            const y1 = off1.top + off1.height + 110;
             // top right
             const x2 = off2.left + off2.width - 10;
-            const y2 = off2.top + 10;
+            const y2 = off2.top + 110;
             // distance
             const length = Math.sqrt(((x2-x1) * (x2-x1)) + ((y2-y1) * (y2-y1)));
             // center

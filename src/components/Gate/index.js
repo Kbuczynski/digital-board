@@ -11,14 +11,14 @@ import {
     StyledGateSymbol,
     StyledRotate
 } from './style';
-import {getOffset} from "../../utils/getOffset";
 import Cable from "../Cable";
+import {getOffset} from "../../utils/getOffset";
 
 const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, setOutputNodeId}) => {
     const [icon, setIcon] = useState('');
     const [inputsArr, setInputsArr] = useState([]);
     const [rotate, setRotate] = useState(0);
-  const [value, setValue] = useState(node.gate.value);
+    const [value, setValue] = useState(node.gate.value);
     const [gateX, setGateX] = useState(node.x);
     const [gateY, setGateY] = useState(node.y);
 
@@ -53,21 +53,27 @@ const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, 
 
 
     const handlePosition = (e) => {
-        setGateX(e.screenX)
-        setGateY(e.screenY);
-        gate.x = e.screenX;
-        gate.y = e.screenY;
-        handleNewPositions(node.id, e.screenX, e.screenY);
+        const left = getOffset(e.target).left;
+        const top = getOffset(e.target).top;
+
+        console.log(left, e.screenX)
+
+        setGateX(left)
+        setGateY(top);
+        gate.x = left;
+        gate.y = top;
+        handleNewPositions(node.id, left, top);
     }
 
     return (
         <>
             <Draggable
                 handle=".handle"
-                defaultPosition={{x: node.x, y: node.y}}
+                defaultPosition={{x: 0, y: 0}}
+                position={{x: gateX, y: gateY}}
                 onDrag={handlePosition}
             >
-                <div className="handle" id={node.id} o>
+                <div className="handle" id={node.id}>
                     <StyledRotate src={rotateImg} alt="rotate" onClick={() => setRotate(rotate + 90)}/>
                     {node.gate.name === "INPUT" ? value : ""}
 
@@ -76,7 +82,7 @@ const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, 
                             {
                                 inputsArr.map((index) => <StyledGateInput id={`${node.id}-input-${index}`} key={index}
                                                                           onClick={() => {
-                                                                            setInputNodeId(+node.id)
+                                                                            setInputNodeId(+node.id);
                                                                           }}/>)
 
                             }
