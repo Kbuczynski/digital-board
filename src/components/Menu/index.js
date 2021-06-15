@@ -26,7 +26,7 @@ const Menu = ({ gates, setGates }) => {
 
     const simulate = () => {
         if(gates.length !== 1){
-            console.log("brak układu lub istnieja node nie skonczone")
+            alert("No gates or gates are not connected to each other")
             return;
         }
         let tree = gates[0].findChildren().flat(Infinity);
@@ -35,29 +35,28 @@ const Menu = ({ gates, setGates }) => {
             if(node.gate.name === "DIODE") containsDiode = true;
         }
         if(!containsDiode){
-            console.log("układ nie posiada diody")
+            alert("The system does not have a diode")
             return;
         }
         if(!gates[0].isTreeCompleted()){
-            console.log("układ nie jest kompletny")
+            alert("The system is not complete")
             return;
         }
 
-        console.log(gates);
-        console.log(gates[0].result())
-
+        const result = gates[0].result();
+        alert(`Output: ${+result}`);
     }
 
     return (
         <StyledMenu>
             {
                 GATES.map((gate, index) =>
-                    <StyledMenuItem key={gate.name} onClick={() => handleClick(gate)} >
+                    <StyledMenuItem key={gate.name} onClick={() => handleClick(gate)} title={gate.name}>
                         <img src={icons[index]} alt={gate.name} />
                     </StyledMenuItem>
                 )
             }
-                <StyledMenuItem onClick={() => simulate()} >
+                <StyledMenuItem onClick={simulate} >
                     SIMULATE
                 </StyledMenuItem>
                 <StyledMenuItem onClick={() => {setGates([])}} >

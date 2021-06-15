@@ -51,15 +51,7 @@ class TreeNode {
         node.gate.value = value;
     }
 
-    updatePosition(id, x, y) {
-        const node = this.findNode(id);
-
-        node.x = x;
-        node.y = y;
-    }
-
     updatePosition(node, x, y) {
-        // console.log(node, x, y)
         node.x = x;
         node.y = y;
     }
