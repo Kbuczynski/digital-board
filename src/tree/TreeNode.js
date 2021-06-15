@@ -16,7 +16,6 @@ class TreeNode {
         let gate = new GateReturner().getGate(json.gate.name);
         if(json.gate.name === "INPUT"){
             gate.value = json.gate.value;
-            gate.operation = json.gate.operation;
             gate.x = json.gate.x;
             gate.y = json.gate.y;
         }
@@ -26,6 +25,13 @@ class TreeNode {
         node.depth = json.depth;
         node.x = json.x;
         node.y = json.y;
+        let desc = [];
+        for(const dd of json.descendants){
+            console.log("DD: ", dd);
+            desc.push(TreeNode.from(dd));
+        }
+        node.descendants = desc;
+        // node.descendants = json.descendants.forEach((descendant) => new TreeNode(descendant))
         node.complete = json.complete;
 
         return node
