@@ -1,12 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import Gate from '../Gate';
 import {StyledBoard} from './style';
-import Cable from "../Cable";
-import {getOffset} from "../../utils/getOffset";
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import TreeNode from "../../tree/TreeNode";
 
 const Board = ({gates, setGates}) => {
     const [inputNodeId, setInputNodeId] = useState(null);
     const [outputNodeId, setOutputNodeId] = useState(null);
+    const [conneting, setConnecting] = useState(true);
+    const ws = useRef(null);
 
     const handleNewValue = (id, value) => {
         const newGates = gates;
@@ -19,12 +23,57 @@ const Board = ({gates, setGates}) => {
             }
         }
         if(node) node.changeValue(id,value);
-        setGates(newGates);
+        if (conneting) {
+            console.log("XD")
+            return;
+        }
+        ws.current.send(JSON.stringify(gates))
+        // setGates(newGates);
     }
 
     useEffect(() => {
-        console.log("INPUT:", inputNodeId)
-        console.log("OUTPUT:", outputNodeId)
+        ws.current = new W3CWebSocket('ws://192.168.43.74:8000');
+        ws.current.onopen = () => {
+            console.log("ws opened");
+            setConnecting(false);
+            ws.current.onmessage = function(e) {
+                if(typeof e.data === 'string') {
+                    setGates(JSON.parse(e.data))
+                }
+            }
+        }
+        ws.current.onclose = () => console.log("ws closed");
+
+        return () => {
+            ws.current.close();
+        };
+    }, [])
+
+    useEffect(() => {
+        if (conneting) {
+            console.log("XD")
+            return;
+        }
+        ws.current.send(JSON.stringify(gates))
+    } )
+
+    useEffect(() => {
+        if (conneting) return;
+        ws.current.onmessage = function(e) {
+            if (typeof e.data === 'string') {
+                if(JSON.stringify(gates) !== e.data){
+                    let potentialGates = JSON.parse(e.data);
+                    let array = [];
+                    for(let gate of potentialGates){
+                        array.push(TreeNode.from(gate))
+                    }
+                    setGates(array)
+                }
+            }
+        };
+    })
+
+    useEffect(() => {
         if(inputNodeId && outputNodeId){
             if(inputNodeId !== outputNodeId){
                 let inputNode;
@@ -73,7 +122,11 @@ const Board = ({gates, setGates}) => {
         if (node) {
             const newGates = gates;
             gates[0].updatePosition(node, x, y);
-            setGates(newGates);
+            if (conneting) {
+                return;
+            }
+            ws.current.send(JSON.stringify(gates))
+            // setGates(newGates);
         }
     }
 
