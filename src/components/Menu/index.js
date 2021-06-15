@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { GATES } from '../../data/gates';
 import { StyledMenu, StyledMenuItem } from "./style";
 import TreeNode from "../../tree/TreeNode";
 import GateReturner from "../../data/GateReturner";
 
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
 const Menu = ({ gates, setGates }) => {
     const [icons, setIcons] = useState([]);
+    const [conneting, setConnecting] = useState(true);
+    const ws = useRef(null);
     let gt = new GateReturner();
 
     useEffect(() => {
@@ -22,7 +26,52 @@ const Menu = ({ gates, setGates }) => {
         handleSVG();
     }, [])
 
+    useEffect(() => {
+        ws.current = new W3CWebSocket('ws://51.178.80.190:8000');
+        ws.current.onopen = () => {
+            console.log("ws opened");
+            setConnecting(false);
+        }
+        ws.current.onclose = () => console.log("ws closed");
+
+        return () => {
+            ws.current.close();
+        };
+    }, [])
+
     const handleClick = (gate) => setGates([...gates, new TreeNode(gt.getGate(gate.name), 1)])
+
+    const handleBroadcast = () => {
+        if(conneting) return;
+        ws.current.send(JSON.stringify(gates));
+        // setTimeout(() => {
+        //     ws.current.onmessage = function(e) {
+        //         if(typeof e.data !== e.data){
+        //             let potentialGates = JSON.parse(e.data);
+        //             let array = [];
+        //             for(let gate of potentialGates){
+        //                 array.push(TreeNode.from(gate))
+        //             }
+        //             setGates(array);
+        //         }
+        //     }
+        // }, 500)
+    }
+
+    useEffect(() => {
+        console.log("BEFORE: ", gates);
+        ws.current.onmessage = function(e) {
+            if(typeof e.data !== e.data){
+                let potentialGates = JSON.parse(e.data);
+                let array = [];
+                for(let gate of potentialGates){
+                    array.push(TreeNode.from(gate))
+                }
+                setGates(array);
+                console.log("AFTER: ", gates)
+            }
+        }
+    })
 
     const simulate = () => {
         if(gates.length !== 1){
@@ -61,6 +110,9 @@ const Menu = ({ gates, setGates }) => {
                 </StyledMenuItem>
                 <StyledMenuItem onClick={() => {setGates([])}} >
                     CLEAR
+                </StyledMenuItem>
+                <StyledMenuItem onClick={() => {handleBroadcast()}} >
+                    BROADCAST
                 </StyledMenuItem>
         </StyledMenu>
     );

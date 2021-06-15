@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import Gate from '../Gate';
 import {StyledBoard} from './style';
-import Cable from "../Cable";
-import {getOffset} from "../../utils/getOffset";
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
+import TreeNode from "../../tree/TreeNode";
 
 const Board = ({gates, setGates}) => {
     const [inputNodeId, setInputNodeId] = useState(null);
@@ -23,8 +24,6 @@ const Board = ({gates, setGates}) => {
     }
 
     useEffect(() => {
-        console.log("INPUT:", inputNodeId)
-        console.log("OUTPUT:", outputNodeId)
         if(inputNodeId && outputNodeId){
             if(inputNodeId !== outputNodeId){
                 let inputNode;
@@ -76,7 +75,6 @@ const Board = ({gates, setGates}) => {
             setGates(newGates);
         }
     }
-
 
     return (
         <StyledBoard>

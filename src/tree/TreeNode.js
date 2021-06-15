@@ -1,3 +1,5 @@
+import GateReturner from "../data/GateReturner";
+
 class TreeNode {
     constructor(gate, depth) {
         this.gate = gate;
@@ -8,6 +10,31 @@ class TreeNode {
         this.y = 0;
         this.id = Date.now() + Math.floor(Math.random() * 100000);
         this.complete = this.descendants.length == this.gate.inputs ? true : false;
+    }
+
+    static from(json){
+        let gate = new GateReturner().getGate(json.gate.name);
+        if(json.gate.name === "INPUT"){
+            gate.value = json.gate.value;
+            gate.x = json.gate.x;
+            gate.y = json.gate.y;
+        }
+        let node = new TreeNode(gate,json.depth);
+        node.id = json.id;
+        node.parent = json.parent;
+        node.depth = json.depth;
+        node.x = json.x;
+        node.y = json.y;
+        let desc = [];
+        for(const dd of json.descendants){
+            console.log("DD: ", dd);
+            desc.push(TreeNode.from(dd));
+        }
+        node.descendants = desc;
+        // node.descendants = json.descendants.forEach((descendant) => new TreeNode(descendant))
+        node.complete = json.complete;
+
+        return node
     }
 
     isTreeCompleted(){
