@@ -51,6 +51,10 @@ const Gate = ({gates, node, handleNewValue, handleNewPositions, setInputNodeId, 
         }
     }
 
+    useEffect(() => {
+        setValue(node.gate.value)
+    }, [node])
+
 
     const handlePosition = (e, ui) => {
 
